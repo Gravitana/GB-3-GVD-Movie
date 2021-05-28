@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import com.example.gvdmovie.AppState
 import com.example.gvdmovie.databinding.DetailFragmentBinding
+import com.example.gvdmovie.model.Movie
 import com.google.android.material.snackbar.Snackbar
 
 class DetailFragment : Fragment() {
@@ -41,7 +42,7 @@ class DetailFragment : Fragment() {
         viewModel = ViewModelProvider(this).get(DetailViewModel::class.java)
 
         viewModel.getLiveData().observe(viewLifecycleOwner, Observer { renderData(it) })
-        viewModel.getMovie()
+        viewModel.getMovieFromLocalSource()
     }
 
     private fun renderData(appState: AppState) {
@@ -49,7 +50,8 @@ class DetailFragment : Fragment() {
             is AppState.Success -> {
                 val movieData = appState.movieData
                 binding.loadingLayout.visibility = View.GONE
-                Snackbar.make(binding.mainView, "Success", Snackbar.LENGTH_LONG).show()
+//                Snackbar.make(binding.mainView, "Success", Snackbar.LENGTH_LONG).show()
+                setData(movieData)
             }
             is AppState.Loading -> {
                 binding.loadingLayout.visibility = View.VISIBLE
@@ -58,10 +60,18 @@ class DetailFragment : Fragment() {
                 binding.loadingLayout.visibility = View.GONE
                 Snackbar
                     .make(binding.mainView, "Error", Snackbar.LENGTH_INDEFINITE)
-                    .setAction("Reload") { viewModel.getMovie() }
+                    .setAction("Reload") { viewModel.getMovieFromLocalSource() }
                     .show()
             }
         }
+    }
+
+    private fun setData(movieData: Movie) {
+        binding.movieTitle.text = movieData.title
+        binding.movieOriginalTitle.text = movieData.originalTitle
+        binding.movieReleaseDate.text = movieData.releaseDate
+        binding.movieTagline.text = movieData.tagline
+        binding.movieRuntime.text = movieData.runtime
     }
 
     override fun onDestroyView() {

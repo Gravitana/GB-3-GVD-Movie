@@ -33,6 +33,7 @@
             android:layout_height="wrap_content"
             android:textSize="35sp"
             android:textStyle="bold"
+            android:text=""
             tools:text="Трасса 60" />
 
         <TextView
