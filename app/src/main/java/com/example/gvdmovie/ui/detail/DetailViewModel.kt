@@ -1,12 +1,11 @@
-package com.example.gvdmovie.ui.main
+package com.example.gvdmovie.ui.detail
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.gvdmovie.AppState
 import java.lang.Thread.sleep
 
-class MainViewModel(private val liveDataToObserve: MutableLiveData<AppState> = MutableLiveData()) :
+class DetailViewModel(private val liveDataToObserve: MutableLiveData<AppState> = MutableLiveData()) :
     ViewModel() {
 
     fun getLiveData() = liveDataToObserve

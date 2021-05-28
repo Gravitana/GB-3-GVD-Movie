@@ -1,4 +1,4 @@
-package com.example.gvdmovie.ui.main
+package com.example.gvdmovie.ui.detail
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -10,51 +10,44 @@ import android.widget.Toast
 import androidx.lifecycle.Observer
 import com.example.gvdmovie.AppState
 import com.example.gvdmovie.R
+import com.example.gvdmovie.databinding.DetailFragmentBinding
 import com.example.gvdmovie.databinding.MainFragmentBinding
 import com.google.android.material.snackbar.Snackbar
 
-class MainFragment : Fragment() {
+class DetailFragment : Fragment() {
 
     companion object {
-        fun newInstance() = MainFragment()
+        fun newInstance() = DetailFragment()
     }
 
-    private lateinit var viewModel: MainViewModel
+    private lateinit var viewModel: DetailViewModel
 
-    private var _binding: MainFragmentBinding? = null
+    private var _binding: DetailFragmentBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-//        return inflater.inflate(R.layout.main_fragment, container, false)
-        _binding = MainFragmentBinding.inflate(inflater, container, false)
+    ): View? {
+        _binding = DetailFragmentBinding.inflate(inflater, container, false)
         val view = binding.root
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.message.text = "MainFragmentBinding"
+        binding.message.text = "DetailFragmentBinding"
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(DetailViewModel::class.java)
 
-/*
-        val observer = Observer<Any> { renderData(it) }
-        viewModel.getData().observe(viewLifecycleOwner, observer)
-*/
         viewModel.getLiveData().observe(viewLifecycleOwner, Observer { renderData(it) })
         viewModel.getMovie()
     }
 
     private fun renderData(appState: AppState) {
-//        Toast.makeText(context, "data", Toast.LENGTH_LONG).show()
-
         when (appState) {
             is AppState.Success -> {
                 val movieData = appState.movieData

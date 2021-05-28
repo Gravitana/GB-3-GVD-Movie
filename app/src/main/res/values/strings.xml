@@ -1,4 +1,12 @@
 <resources>
     <string name="app_name">GVD Movie</string>
     <string name="mainfragment_message">MainFragment</string>
+
+    <string name="movie_title_label">Название</string>
+    <string name="movie_original_title_label">Оригинальное название</string>
+    <string name="movie_release_date_label">Дата релиза</string>
+    <string name="movie_tagline_label">Теги</string>
+    <string name="movie_runtime_label">Продолжительность</string>
+    <string name="listfragment_message">Список фильмов</string>
+    <string name="listfragment_button">Перейти к деталям</string>
 </resources>
