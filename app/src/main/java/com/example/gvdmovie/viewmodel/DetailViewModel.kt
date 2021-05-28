@@ -4,7 +4,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.gvdmovie.model.Repository
 import com.example.gvdmovie.model.RepositoryImpl
+import java.lang.Exception
 import java.lang.Thread.sleep
+import java.util.*
 
 class DetailViewModel(
     private val liveDataToObserve: MutableLiveData<AppState> = MutableLiveData(),
@@ -22,9 +24,14 @@ class DetailViewModel(
 
         liveDataToObserve.value = AppState.Loading
 
+        val isMovieLoaded = Random().nextBoolean()
+
         Thread {
             sleep(2000)
-            liveDataToObserve.postValue(AppState.Success(repositoryImpl.getMovieFromLocalStorage()))
+            liveDataToObserve.postValue(
+                if (isMovieLoaded) AppState.Success(repositoryImpl.getMovieFromLocalStorage())
+                else AppState.Error(Exception("Неудачная загрузка"))
+            )
         }.start()
     }
 }
