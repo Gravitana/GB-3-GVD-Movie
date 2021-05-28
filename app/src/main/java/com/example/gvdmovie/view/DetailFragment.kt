@@ -1,4 +1,4 @@
-package com.example.gvdmovie.ui.detail
+package com.example.gvdmovie.view
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -7,9 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
-import com.example.gvdmovie.AppState
+import com.example.gvdmovie.viewmodel.AppState
 import com.example.gvdmovie.databinding.DetailFragmentBinding
 import com.example.gvdmovie.model.Movie
+import com.example.gvdmovie.viewmodel.DetailViewModel
 import com.google.android.material.snackbar.Snackbar
 
 class DetailFragment : Fragment() {
@@ -26,7 +27,7 @@ class DetailFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = DetailFragmentBinding.inflate(inflater, container, false)
         val view = binding.root
         return view

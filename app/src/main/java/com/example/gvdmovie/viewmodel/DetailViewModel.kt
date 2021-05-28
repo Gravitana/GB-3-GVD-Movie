@@ -1,8 +1,7 @@
-package com.example.gvdmovie.ui.detail
+package com.example.gvdmovie.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.gvdmovie.AppState
 import com.example.gvdmovie.model.Repository
 import com.example.gvdmovie.model.RepositoryImpl
 import java.lang.Thread.sleep
@@ -17,7 +16,7 @@ class DetailViewModel(
 
     fun getMovieFromLocalSource() = getDataFromLocalSource()
 
-    fun getMovieFromRemoteSource() = getDataFromLocalSource() // TODO
+    fun getMovieFromRemoteSource() = getDataFromLocalSource()
 
     private fun getDataFromLocalSource() {
 

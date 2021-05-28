@@ -1,4 +1,4 @@
-package com.example.gvdmovie.ui.list
+package com.example.gvdmovie.view
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.gvdmovie.R
 import com.example.gvdmovie.databinding.ListFragmentBinding
-import com.example.gvdmovie.ui.detail.DetailFragment
+import com.example.gvdmovie.viewmodel.ListViewModel
 
 class ListFragment : Fragment() {
 

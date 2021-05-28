@@ -1,4 +1,4 @@
-package com.example.gvdmovie
+package com.example.gvdmovie.viewmodel
 
 import com.example.gvdmovie.model.Movie
 

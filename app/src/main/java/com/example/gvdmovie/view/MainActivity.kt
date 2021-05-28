@@ -1,8 +1,8 @@
-package com.example.gvdmovie
+package com.example.gvdmovie.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.gvdmovie.ui.list.ListFragment
+import com.example.gvdmovie.R
 
 class MainActivity : AppCompatActivity() {
 

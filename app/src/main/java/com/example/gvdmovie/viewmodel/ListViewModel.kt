@@ -1,4 +1,4 @@
-package com.example.gvdmovie.ui.list
+package com.example.gvdmovie.viewmodel
 
 import androidx.lifecycle.ViewModel
 
