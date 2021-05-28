@@ -6,12 +6,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.lifecycle.Observer
 import com.example.gvdmovie.AppState
-import com.example.gvdmovie.R
 import com.example.gvdmovie.databinding.DetailFragmentBinding
-import com.example.gvdmovie.databinding.MainFragmentBinding
 import com.google.android.material.snackbar.Snackbar
 
 class DetailFragment : Fragment() {
@@ -36,7 +33,7 @@ class DetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.message.text = "DetailFragmentBinding"
+        binding.message.text = "Подробная информация о фильме"
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.gvdmovie.R
+import com.example.gvdmovie.databinding.ListFragmentBinding
+import com.example.gvdmovie.ui.detail.DetailFragment
 
 class ListFragment : Fragment() {
 
@@ -16,11 +18,28 @@ class ListFragment : Fragment() {
 
     private lateinit var viewModel: ListViewModel
 
+    private var _binding: ListFragmentBinding? = null
+    private val binding get() = _binding!!
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.list_fragment, container, false)
+        _binding = ListFragmentBinding.inflate(inflater, container, false)
+        val view = binding.root
+        return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.button.setOnClickListener { openDetailFragment() }
+    }
+
+    private fun openDetailFragment() {
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.container, DetailFragment.newInstance())
+            .addToBackStack(null)
+            .commit()
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -29,4 +48,8 @@ class ListFragment : Fragment() {
         // TODO: Use the ViewModel
     }
 
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
+    }
 }
