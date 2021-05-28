@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">GVD Movie</string>
+    <string name="mainfragment_message">MainFragment</string>
 </resources>

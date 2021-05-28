@@ -8,8 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.Observer
+import com.example.gvdmovie.AppState
 import com.example.gvdmovie.R
 import com.example.gvdmovie.databinding.MainFragmentBinding
+import com.google.android.material.snackbar.Snackbar
 
 class MainFragment : Fragment() {
 
@@ -42,12 +44,34 @@ class MainFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
+/*
         val observer = Observer<Any> { renderData(it) }
         viewModel.getData().observe(viewLifecycleOwner, observer)
+*/
+        viewModel.getLiveData().observe(viewLifecycleOwner, Observer { renderData(it) })
+        viewModel.getMovie()
     }
 
-    private fun renderData(data: Any) {
-        Toast.makeText(context, "data", Toast.LENGTH_LONG).show()
+    private fun renderData(appState: AppState) {
+//        Toast.makeText(context, "data", Toast.LENGTH_LONG).show()
+
+        when (appState) {
+            is AppState.Success -> {
+                val movieData = appState.movieData
+                binding.loadingLayout.visibility = View.GONE
+                Snackbar.make(binding.mainView, "Success", Snackbar.LENGTH_LONG).show()
+            }
+            is AppState.Loading -> {
+                binding.loadingLayout.visibility = View.VISIBLE
+            }
+            is AppState.Error -> {
+                binding.loadingLayout.visibility = View.GONE
+                Snackbar
+                    .make(binding.mainView, "Error", Snackbar.LENGTH_INDEFINITE)
+                    .setAction("Reload") { viewModel.getMovie() }
+                    .show()
+            }
+        }
     }
 
     override fun onDestroyView() {
