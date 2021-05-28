@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import com.example.gvdmovie.R
+import com.example.gvdmovie.databinding.MainFragmentBinding
 
 class MainFragment : Fragment() {
 
@@ -18,11 +19,23 @@ class MainFragment : Fragment() {
 
     private lateinit var viewModel: MainViewModel
 
+    private var _binding: MainFragmentBinding? = null
+    private val binding get() = _binding!!
+
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.main_fragment, container, false)
+//        return inflater.inflate(R.layout.main_fragment, container, false)
+        _binding = MainFragmentBinding.inflate(inflater, container, false)
+        val view = binding.root
+        return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.message.text = "MainFragmentBinding"
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -37,4 +50,10 @@ class MainFragment : Fragment() {
         Toast.makeText(context, "data", Toast.LENGTH_LONG).show()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        /* Обязательно обнуляем _binding в onDestroyView, чтобы избежать утечек и не желаемого поведения.
+           В Activity ничего похожего делать не требуется */
+        _binding = null
+    }
 }
