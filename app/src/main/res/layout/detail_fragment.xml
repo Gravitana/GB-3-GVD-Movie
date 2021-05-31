@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/mainView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/app_name"
+            android:layout_margin="@dimen/card_margin"
+            android:gravity="center_horizontal"
+            tools:text="message" />
+
+        <TextView
+            android:id="@+id/movie_title_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/movie_title_label"
+            android:layout_marginTop="@dimen/card_item_margin"
+            tools:text="Название" />
+        <TextView
+            android:id="@+id/movie_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="35sp"
+            android:textStyle="bold"
+            android:text=""
+            tools:text="Трасса 60" />
+
+        <TextView
+            android:id="@+id/movie_original_title_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/movie_original_title_label"
+            android:layout_marginTop="@dimen/card_item_margin"
+            tools:text="Оригинальное название" />
+        <TextView
+            android:id="@+id/movie_original_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Interstate 60" />
+
+        <TextView
+            android:id="@+id/movie_release_date_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/movie_release_date_label"
+            android:layout_marginTop="@dimen/card_item_margin"
+            tools:text="Дата релиза" />
+        <TextView
+            android:id="@+id/movie_release_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="13/04/2002 (US)" />
+
+        <TextView
+            android:id="@+id/movie_tagline_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/movie_tagline_label"
+            android:layout_marginTop="@dimen/card_item_margin"
+            tools:text="Теги" />
+        <TextView
+            android:id="@+id/movie_tagline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="приключения, комедия, фэнтези" />
+
+        <TextView
+            android:id="@+id/movie_runtime_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/movie_runtime_label"
+            android:layout_marginTop="@dimen/card_item_margin"
+            tools:text="Продолжительность" />
+        <TextView
+            android:id="@+id/movie_runtime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="1h 56m" />
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/loadingLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/loadingBackground"
+        android:visibility="gone"
+        tools:visibility="visible"
+        tools:showIn="@layout/detail_fragment">
+
+        <ProgressBar
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+    </FrameLayout>
+</FrameLayout>
