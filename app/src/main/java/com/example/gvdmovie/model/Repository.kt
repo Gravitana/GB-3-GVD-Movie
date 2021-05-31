@@ -2,5 +2,6 @@ package com.example.gvdmovie.model
 
 interface Repository {
     fun getMovieFromServer(): Movie
-    fun getMovieFromLocalStorage(): Movie
+    fun getMovieFromLocalStorageRus(): List<Movie>
+    fun getMovieFromLocalStorageWorld(): List<Movie>
 }
