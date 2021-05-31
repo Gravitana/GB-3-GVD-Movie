@@ -1,4 +1,4 @@
-package com.example.gvdmovie.view
+package com.example.gvdmovie.view.details
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -15,6 +15,7 @@ import com.google.android.material.snackbar.Snackbar
 
 class DetailFragment : Fragment() {
 
+/*
     companion object {
         fun newInstance() = DetailFragment()
     }
@@ -77,8 +78,10 @@ class DetailFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        /* Обязательно обнуляем _binding в onDestroyView, чтобы избежать утечек и не желаемого поведения.
-           В Activity ничего похожего делать не требуется */
+//        Обязательно обнуляем _binding в onDestroyView, чтобы избежать утечек и не желаемого поведения.
+//        В Activity ничего похожего делать не требуется
         _binding = null
     }
+*/
+
 }

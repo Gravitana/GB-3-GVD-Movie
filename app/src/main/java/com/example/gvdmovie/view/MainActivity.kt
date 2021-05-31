@@ -3,6 +3,7 @@ package com.example.gvdmovie.view
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.gvdmovie.R
+import com.example.gvdmovie.view.list.ListFragment
 
 class MainActivity : AppCompatActivity() {
 

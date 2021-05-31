@@ -1,6 +1,6 @@
 package com.example.gvdmovie.model
 
 class Country (
-    val title: String,
+    val country: String,
     val code: String,
 )
