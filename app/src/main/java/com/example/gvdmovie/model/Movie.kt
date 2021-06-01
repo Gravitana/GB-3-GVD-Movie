@@ -1,5 +1,9 @@
 package com.example.gvdmovie.model
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
 data class Movie(
     val country: Country = getDefaultCountry(),
     val title: String = "",
@@ -8,7 +12,7 @@ data class Movie(
     val tagline: String = "",
     val runtime: String = "",
     val poster: String = "",
-)
+) : Parcelable
 
 fun getDefaultCountry() = Country("Россия", "ru")
 

@@ -9,6 +9,8 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import com.example.gvdmovie.R
 import com.example.gvdmovie.databinding.ListFragmentBinding
+import com.example.gvdmovie.model.Movie
+import com.example.gvdmovie.view.details.DetailFragment
 import com.example.gvdmovie.viewmodel.AppState
 import com.example.gvdmovie.viewmodel.DetailViewModel
 import com.google.android.material.snackbar.Snackbar
@@ -19,7 +21,21 @@ class ListFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var viewModel: DetailViewModel
-    private val adapter = ListFragmentAdapter()
+
+    private val adapter = ListFragmentAdapter(object : OnItemViewClickListener {
+        override fun onItemViewClick(movie: Movie) {
+            val manager = activity?.supportFragmentManager
+            if (manager != null) {
+                val bundle = Bundle()
+                bundle.putParcelable(DetailFragment.BUNDLE_EXTRA, movie)
+                manager.beginTransaction()
+                    .add(R.id.container, DetailFragment.newInstance(bundle))
+                    .addToBackStack("")
+                    .commitAllowingStateLoss()
+            }
+        }
+    })
+
     private var isDataSetRus: Boolean = true
 
     override fun onCreateView(
@@ -70,26 +86,14 @@ class ListFragment : Fragment() {
         }
     }
 
-/*
-    private fun openDetailFragment() {
-        parentFragmentManager.beginTransaction()
-            .replace(R.id.container, DetailFragment.newInstance())
-            .addToBackStack(null)
-            .commit()
+    interface OnItemViewClickListener {
+        fun onItemViewClick(movie: Movie)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(ListViewModel::class.java)
-        // TODO: Use the ViewModel
+    override fun onDestroy() {
+        adapter.removeListener()
+        super.onDestroy()
     }
-
-    override fun onDestroyView() {
-        _binding = null
-        super.onDestroyView()
-    }
-*/
-
 
     companion object {
         fun newInstance() = ListFragment()

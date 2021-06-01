@@ -11,4 +11,5 @@
     <string name="listfragment_button">Перейти к деталям</string>
     <string name="error">Error</string>
     <string name="reload">Reload</string>
+    <string name="movie_country_label">Страна</string>
 </resources>

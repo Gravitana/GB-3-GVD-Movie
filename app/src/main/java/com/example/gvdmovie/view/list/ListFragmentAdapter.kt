@@ -9,27 +9,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.gvdmovie.R
 import com.example.gvdmovie.model.Movie
 
-class ListFragmentAdapter : RecyclerView.Adapter<ListFragmentAdapter.ListViewHolder>() {
+class ListFragmentAdapter(
+    private var onItemViewClickListener: ListFragment.OnItemViewClickListener?
+) : RecyclerView.Adapter<ListFragmentAdapter.ListViewHolder>() {
 
     private var movieData: List<Movie> = listOf()
 
     fun setMovie(data: List<Movie>) {
         movieData = data
         notifyDataSetChanged()
-    }
-
-    inner class ListViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-
-        fun bind(movie: Movie) {
-            itemView.findViewById<TextView>(R.id.listRecyclerItemTextView).text = movie.title
-            itemView.setOnClickListener {
-                Toast.makeText(
-                    itemView.context,
-                    movie.country.country,
-                    Toast.LENGTH_LONG
-                ).show()
-            }
-        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
@@ -44,5 +32,19 @@ class ListFragmentAdapter : RecyclerView.Adapter<ListFragmentAdapter.ListViewHol
 
     override fun getItemCount(): Int {
         return movieData.size
+    }
+
+    inner class ListViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+
+        fun bind(movie: Movie) {
+            itemView.findViewById<TextView>(R.id.listRecyclerItemTextView).text = movie.title
+            itemView.setOnClickListener {
+                onItemViewClickListener?.onItemViewClick(movie)
+            }
+        }
+    }
+
+    fun removeListener() {
+        onItemViewClickListener = null
     }
 }

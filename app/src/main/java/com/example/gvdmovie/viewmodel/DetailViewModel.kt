@@ -26,7 +26,7 @@ class DetailViewModel(
 
         liveDataToObserve.value = AppState.Loading
 
-        val isMovieLoaded = Random().nextBoolean()
+        val isMovieLoaded = true//Random().nextBoolean()
 
         Thread {
             sleep(1000)
