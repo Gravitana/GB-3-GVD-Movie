@@ -52,11 +52,13 @@ class ListFragment : Fragment() {
         binding.listFragmentRecyclerView.adapter = adapter
         binding.listFragmentFAB.setOnClickListener { changeMovieDataSet() }
         viewModel = ViewModelProvider(this).get(DetailViewModel::class.java)
-        viewModel.getLiveData().observe(viewLifecycleOwner, Observer { renderData(it) })
+        viewModel.getLiveData().observe(viewLifecycleOwner, { renderData(it) })
         viewModel.getMovieFromLocalSourceRus()
     }
 
     private fun changeMovieDataSet() {
+        isDataSetRus = !isDataSetRus
+
         if (isDataSetRus) {
             viewModel.getMovieFromLocalSourceRus()
             binding.listFragmentFAB.setImageResource(R.drawable.ic_baseline_favorite_24)
@@ -64,7 +66,6 @@ class ListFragment : Fragment() {
             viewModel.getMovieFromLocalSourceWorld()
             binding.listFragmentFAB.setImageResource(R.drawable.ic_baseline_language_24)
         }
-        isDataSetRus = !isDataSetRus
     }
 
     private fun renderData(appState: AppState?) {

@@ -3,23 +3,25 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/itemContainer"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_width="@dimen/card_width"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/card_margin">
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/listRecyclerItemTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
         android:padding="@dimen/recycler_item_padding"
         android:textSize="@dimen/recycler_item_text_size"
+        android:gravity="center_horizontal"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Россия" />
+        tools:text="Заголовок" />
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="@dimen/recycler_item_line_height"
-        android:layout_marginEnd="@dimen/recycler_item_line_margin_end"
+        android:layout_height="@dimen/card_height"
         android:background="@android:color/darker_gray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
