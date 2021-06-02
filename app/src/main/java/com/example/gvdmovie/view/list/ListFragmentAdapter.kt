@@ -37,9 +37,9 @@ class ListFragmentAdapter(
     inner class ListViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         fun bind(movie: Movie) {
-            itemView.findViewById<TextView>(R.id.listRecyclerItemTextView).text = movie.title
-            itemView.setOnClickListener {
-                onItemViewClickListener?.onItemViewClick(movie)
+            itemView.apply {
+                findViewById<TextView>(R.id.listRecyclerItemTextView).text = movie.title
+                setOnClickListener { onItemViewClickListener?.onItemViewClick(movie) }
             }
         }
     }

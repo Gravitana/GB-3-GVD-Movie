@@ -25,19 +25,18 @@ class DetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.message.text = "Подробная информация о фильме"
-
-        val movie = arguments?.getParcelable<Movie>(BUNDLE_EXTRA)
-        if (movie != null) {
-            val country = movie.country
-            binding.movieCountry.text = country.country
-            binding.movieTitle.text = movie.title
-            binding.movieOriginalTitle.text = movie.originalTitle
-            binding.movieReleaseDate.text = movie.releaseDate
-            binding.movieTagline.text = movie.tagline
-            binding.movieRuntime.text = movie.runtime
+        arguments?.getParcelable<Movie>(BUNDLE_EXTRA)?.let { movie ->
+            movie.country.also { country ->
+                binding.movieCountry.text = country.country
+                binding.movieTitle.text = movie.title
+                binding.movieOriginalTitle.text = movie.originalTitle
+                binding.movieReleaseDate.text = movie.releaseDate
+                binding.movieTagline.text = movie.tagline
+                binding.movieRuntime.text = movie.runtime
+            }
         }
 
+        binding.message.text = "Подробная информация о фильме"
     }
 
     companion object {
