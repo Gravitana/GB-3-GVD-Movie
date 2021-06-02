@@ -10,6 +10,7 @@ import com.example.gvdmovie.R
 import com.example.gvdmovie.databinding.ListFragmentBinding
 import com.example.gvdmovie.model.Movie
 import com.example.gvdmovie.view.details.DetailFragment
+import com.example.gvdmovie.view.showInfoInSnackBar
 import com.example.gvdmovie.view.showSnackBar
 import com.example.gvdmovie.viewmodel.AppState
 import com.example.gvdmovie.viewmodel.DetailViewModel
@@ -71,6 +72,7 @@ class ListFragment : Fragment() {
         when (appState) {
             is AppState.Success -> {
                 listFragmentLoadingLayout.visibility = View.GONE
+                listFragmentRootView.showInfoInSnackBar(R.string.loading_success, Snackbar.LENGTH_SHORT)
                 adapter.setMovie(appState.movieData)
             }
             is AppState.Loading -> {

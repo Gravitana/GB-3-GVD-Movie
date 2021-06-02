@@ -14,6 +14,13 @@ fun View.showSnackBar(
     Snackbar.make(this, text, length).setAction(actionText, action).show()
 }
 
+fun View.showInfoInSnackBar(
+    textResource: Int,
+    length: Int = Snackbar.LENGTH_INDEFINITE
+) {
+    Snackbar.make(this, resources.getString(textResource), length).show()
+}
+
 // Расширяем функционал вью для отображения клавиатуры
 fun View.showKeyboard() {
     val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
