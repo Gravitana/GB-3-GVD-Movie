@@ -11,6 +11,9 @@ import com.example.gvdmovie.databinding.DetailFragmentBinding
 import com.example.gvdmovie.loader.MovieLoader
 import com.example.gvdmovie.model.Movie
 import com.example.gvdmovie.model.MovieDTO
+import com.squareup.picasso.Picasso
+
+const val POSTER_WIDTH = "w500"
 
 class DetailFragment : Fragment() {
 
@@ -63,6 +66,11 @@ class DetailFragment : Fragment() {
             movieReleaseDate.text = movieDTO.release_date
             movieTagline.text = movieDTO.tagline
             movieRuntime.text = movieDTO.runtime
+
+            Picasso
+                .get()
+                .load("https://image.tmdb.org/t/p/${POSTER_WIDTH}${movieDTO.poster_path}")
+                .into(movieImage)
         }
     }
 
