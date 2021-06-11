@@ -16,20 +16,24 @@ class DetailViewModel(
 
     fun getLiveData() = liveDataToObserve
 
-    fun getMovieFromLocalSource() = getDataFromLocalSource()
+    fun getMovieFromLocalSourceRus() = getDataFromLocalSource(isRussian = true)
 
-    fun getMovieFromRemoteSource() = getDataFromLocalSource()
+    fun getMovieFromLocalSourceWorld() = getDataFromLocalSource(isRussian = false)
 
-    private fun getDataFromLocalSource() {
+    fun getMovieFromRemoteSource() = getDataFromLocalSource(isRussian = true)
+
+    private fun getDataFromLocalSource(isRussian: Boolean) {
 
         liveDataToObserve.value = AppState.Loading
 
-        val isMovieLoaded = Random().nextBoolean()
+        val isMovieLoaded = true//Random().nextBoolean()
 
         Thread {
-            sleep(2000)
+            sleep(1000)
             liveDataToObserve.postValue(
-                if (isMovieLoaded) AppState.Success(repositoryImpl.getMovieFromLocalStorage())
+                if (isMovieLoaded) AppState.Success(
+                    if (isRussian) repositoryImpl.getMovieFromLocalStorageRus()
+                    else repositoryImpl.getMovieFromLocalStorageWorld())
                 else AppState.Error(Exception("Неудачная загрузка"))
             )
         }.start()

@@ -2,4 +2,15 @@
 <resources>
     <dimen name="card_margin">16dp</dimen>
     <dimen name="card_item_margin">8dp</dimen>
+    <dimen name="fab_icon_size">56dp</dimen>
+    <dimen name="fab_margin">15dp</dimen>
+    <dimen name="recycler_item_padding">10dp</dimen>
+    <dimen name="recycler_item_text_size">10sp</dimen>
+    <dimen name="recycler_item_line_height">1dp</dimen>
+    <dimen name="recycler_item_line_margin_end">20dp</dimen>
+    <dimen name="card_width">150dp</dimen>
+    <dimen name="card_height">200dp</dimen>
+    <dimen name="movie_title_text_size">24sp</dimen>
+    <dimen name="movie_lable_text_size">8sp</dimen>
+    <dimen name="movie_item_text_size">16sp</dimen>
 </resources>

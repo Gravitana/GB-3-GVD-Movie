@@ -1,11 +1,9 @@
 package com.example.gvdmovie.model
 
 class RepositoryImpl : Repository {
-    override fun getMovieFromServer(): Movie {
-        return Movie()
-    }
+    override fun getMovieFromServer() = Movie()
 
-    override fun getMovieFromLocalStorage(): Movie {
-        return Movie()
-    }
+    override fun getMovieFromLocalStorageRus() = getRussianMovies()
+
+    override fun getMovieFromLocalStorageWorld() = getWorldMovies()
 }
