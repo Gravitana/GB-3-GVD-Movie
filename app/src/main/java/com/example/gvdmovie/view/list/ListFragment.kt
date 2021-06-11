@@ -6,37 +6,38 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
 import com.example.gvdmovie.R
 import com.example.gvdmovie.databinding.ListFragmentBinding
 import com.example.gvdmovie.model.Movie
 import com.example.gvdmovie.view.details.DetailFragment
+import com.example.gvdmovie.view.showInfoInSnackBar
+import com.example.gvdmovie.view.showSnackBar
 import com.example.gvdmovie.viewmodel.AppState
 import com.example.gvdmovie.viewmodel.DetailViewModel
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.list_fragment.*
 
 class ListFragment : Fragment() {
 
     private var _binding: ListFragmentBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var viewModel: DetailViewModel
+    private val viewModel: DetailViewModel by lazy {
+        ViewModelProvider(this).get(DetailViewModel::class.java)
+    }
+    private var isDataSetRus: Boolean = true
 
     private val adapter = ListFragmentAdapter(object : OnItemViewClickListener {
         override fun onItemViewClick(movie: Movie) {
-            val manager = activity?.supportFragmentManager
-            if (manager != null) {
-                val bundle = Bundle()
-                bundle.putParcelable(DetailFragment.BUNDLE_EXTRA, movie)
-                manager.beginTransaction()
-                    .add(R.id.container, DetailFragment.newInstance(bundle))
+            activity?.supportFragmentManager?.apply {
+                beginTransaction()
+                    .add(R.id.container, DetailFragment.newInstance(Bundle().apply { putParcelable(DetailFragment.BUNDLE_EXTRA, movie) }))
                     .addToBackStack("")
                     .commitAllowingStateLoss()
             }
         }
     })
 
-    private var isDataSetRus: Boolean = true
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,9 +50,8 @@ class ListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.listFragmentRecyclerView.adapter = adapter
-        binding.listFragmentFAB.setOnClickListener { changeMovieDataSet() }
-        viewModel = ViewModelProvider(this).get(DetailViewModel::class.java)
+        listFragmentRecyclerView.adapter = adapter
+        listFragmentFAB.setOnClickListener { changeMovieDataSet() }
         viewModel.getLiveData().observe(viewLifecycleOwner, { renderData(it) })
         viewModel.getMovieFromLocalSourceRus()
     }
@@ -71,18 +71,19 @@ class ListFragment : Fragment() {
     private fun renderData(appState: AppState?) {
         when (appState) {
             is AppState.Success -> {
-                binding.listFragmentLoadingLayout.visibility = View.GONE
+                listFragmentLoadingLayout.visibility = View.GONE
+                listFragmentRootView.showInfoInSnackBar(R.string.loading_success, Snackbar.LENGTH_SHORT)
                 adapter.setMovie(appState.movieData)
             }
             is AppState.Loading -> {
-                binding.listFragmentLoadingLayout.visibility = View.VISIBLE
+                listFragmentLoadingLayout.visibility = View.VISIBLE
             }
             is AppState.Error -> {
-                binding.listFragmentLoadingLayout.visibility = View.GONE
-                Snackbar
-                    .make(binding.listFragmentFAB, getString(R.string.error), Snackbar.LENGTH_INDEFINITE)
-                    .setAction(getString(R.string.reload)) { viewModel.getMovieFromLocalSourceRus() }
-                    .show()
+                listFragmentLoadingLayout.visibility = View.GONE
+                listFragmentRootView.showSnackBar(
+                    getString(R.string.error),
+                    getString(R.string.reload),
+                    { viewModel.getMovieFromLocalSourceRus() })
             }
         }
     }

@@ -9,7 +9,9 @@
     <string name="movie_runtime_label">Продолжительность</string>
     <string name="listfragment_message">Список фильмов</string>
     <string name="listfragment_button">Перейти к деталям</string>
-    <string name="error">Error</string>
-    <string name="reload">Reload</string>
+    <string name="error">Ошибка</string>
+    <string name="reload">Повторить</string>
     <string name="movie_country_label">Страна</string>
+    <string name="loading_success">Загрузка завершена</string>
+    <string name="poster">Постер</string>
 </resources>
