@@ -1,0 +1,54 @@
+{
+  "adult": false,
+  "backdrop_path": "/b0hQsgbKY61xWgxChPR8EG9Terf.jpg",
+  "belongs_to_collection": null,
+  "budget": 0,
+  "genres": [
+    {
+      "id": 35,
+      "name": "комедия"
+    }
+  ],
+  "homepage": "http://cinema.mosfilm.ru/films/film/1960-1969/samogonshiki/",
+  "id": 42279,
+  "imdb_id": "tt0055400",
+  "original_language": "ru",
+  "original_title": "Самогонщики",
+  "overview": "Трус, Балбес и Бывалый решают поставить на широкую ногу изготовление самогона - и снова фиаско...",
+  "popularity": 5.025,
+  "poster_path": "/oLwsqaPUTU2gKCs7zjiFZ1GvSWw.jpg",
+  "production_companies": [
+    {
+      "id": 344,
+      "logo_path": "/xenuUvcunUNpbaDOYGhWZERaym7.png",
+      "name": "Mosfilm",
+      "origin_country": "RU"
+    }
+  ],
+  "production_countries": [
+    {
+      "iso_3166_1": "RU",
+      "name": "Russia"
+    },
+    {
+      "iso_3166_1": "SU",
+      "name": "Soviet Union"
+    }
+  ],
+  "release_date": "1962-01-08",
+  "revenue": 0,
+  "runtime": 19,
+  "spoken_languages": [
+    {
+      "english_name": "Russian",
+      "iso_639_1": "ru",
+      "name": "Pусский"
+    }
+  ],
+  "status": "Released",
+  "tagline": "",
+  "title": "Самогонщики",
+  "video": false,
+  "vote_average": 7.5,
+  "vote_count": 78
+}
