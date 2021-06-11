@@ -13,4 +13,5 @@
     <string name="reload">Повторить</string>
     <string name="movie_country_label">Страна</string>
     <string name="loading_success">Загрузка завершена</string>
+    <string name="poster">Постер</string>
 </resources>
