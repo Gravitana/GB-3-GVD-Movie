@@ -1,4 +1,4 @@
-package com.example.gvdmovie.view
+package com.example.gvdmovie.utils
 
 import android.content.Context
 import android.view.View
