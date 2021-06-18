@@ -1,8 +1,10 @@
 package com.example.gvdmovie.utils
 
+import com.example.gvdmovie.model.Country
 import com.example.gvdmovie.model.Movie
 import com.example.gvdmovie.model.MovieDTO
-import com.example.gvdmovie.model.getDefaultCountry
+
+const val DEFAULT_LANGUAGE = "ru-RU"
 
 fun convertDtoToModel(movieDTO: MovieDTO): List<Movie> {
     return listOf(Movie(
@@ -17,3 +19,5 @@ fun convertDtoToModel(movieDTO: MovieDTO): List<Movie> {
 
     ))
 }
+
+fun getDefaultCountry() = Country("Россия", "RU")

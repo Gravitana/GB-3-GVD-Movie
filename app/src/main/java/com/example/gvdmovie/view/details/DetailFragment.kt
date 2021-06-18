@@ -1,33 +1,27 @@
 package com.example.gvdmovie.view.details
 
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
 import android.os.Bundle
-import android.os.Handler
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.example.gvdmovie.BuildConfig
+import com.example.gvdmovie.R
 import com.example.gvdmovie.databinding.DetailFragmentBinding
 import com.example.gvdmovie.model.Movie
-import com.example.gvdmovie.model.MovieDTO
-import com.google.gson.Gson
+import com.example.gvdmovie.utils.DEFAULT_LANGUAGE
+import com.example.gvdmovie.utils.showSnackBar
+import com.example.gvdmovie.viewmodel.AppState
+import com.example.gvdmovie.viewmodel.DetailViewModel
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.detail_fragment.*
-import okhttp3.*
-import java.io.IOException
 
 const val POSTER_WIDTH = "w500"
-const val STRING_EMPTY = ""
 
-private const val PROCESS_ERROR = "Обработка ошибки"
 private const val MAIN_LINK = "https://api.themoviedb.org/3/movie/"
 private const val API_KEY = BuildConfig.MOVIE_API_KEY
-private const val LANGUAGE = "ru-RU"
 
 class DetailFragment : Fragment() {
 
@@ -35,6 +29,8 @@ class DetailFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var movieBundle: Movie
+
+    private val viewModel: DetailViewModel by lazy { ViewModelProvider(this).get(DetailViewModel::class.java) }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,67 +44,48 @@ class DetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         movieBundle = arguments?.getParcelable(BUNDLE_EXTRA) ?: Movie()
-        getMovie()
-    }
 
-    private fun getMovie() {
-        mainView.visibility = View.GONE
-        loadingLayout.visibility = View.VISIBLE
-
-        val client = OkHttpClient() // Клиент
-        val builder: Request.Builder = Request.Builder() // Создаём строителя запроса
-
-        builder.url(MAIN_LINK + "${movieBundle.id}?api_key=${API_KEY}&language=${LANGUAGE}") // Формируем URL
-
-        val request: Request = builder.build() // Создаём запрос
-        val call: Call = client.newCall(request) // Ставим запрос в очередь и отправляем
-        call.enqueue(object : Callback {
-
-            val handler: Handler = Handler()
-
-            // Вызывается, если ответ от сервера пришёл
-            @Throws(IOException::class)
-            override fun onResponse(call: Call?, response: Response) {
-                val serverResponse: String? = response.body()?.string()
-                // Синхронизируем поток с потоком UI
-                if (response.isSuccessful && serverResponse != null) {
-                    handler.post {
-                        renderData(Gson().fromJson(serverResponse, MovieDTO::class.java))
-                    }
-                } else {
-                    TODO(PROCESS_ERROR)
-                }
-            }
-
-            // Вызывается при сбое в процессе запроса на сервер
-            override fun onFailure(call: Call?, e: IOException?) {
-                TODO(PROCESS_ERROR)
-            }
-        })
+        viewModel.getLiveData().observe(viewLifecycleOwner, { renderData(it) })
+        viewModel.getMovieFromRemoteSource(MAIN_LINK + "${movieBundle.id}?api_key=${API_KEY}&language=${DEFAULT_LANGUAGE}")
 
     }
 
-    private fun renderData(movieDTO: MovieDTO) {
-        mainView.visibility = View.VISIBLE
-        loadingLayout.visibility = View.GONE
-
-        if (movieDTO.id == null || movieDTO.title == null || movieDTO.poster_path == null) {
-            TODO(PROCESS_ERROR)
-        } else {
-            with(binding) {
-                message.text = "Подробная информация о фильме"
-
-                movieTitle.text = movieDTO.title
-                movieOriginalTitle.text = movieDTO.original_title ?: STRING_EMPTY
-                movieReleaseDate.text = movieDTO.release_date ?: STRING_EMPTY
-                movieTagline.text = movieDTO.tagline ?: STRING_EMPTY
-                movieRuntime.text = movieDTO.runtime ?: STRING_EMPTY
-
-                Picasso
-                    .get()
-                    .load("https://image.tmdb.org/t/p/${POSTER_WIDTH}${movieDTO.poster_path}")
-                    .into(movieImage)
+    private fun renderData(appState: AppState) {
+        when (appState) {
+            is AppState.Success -> {
+                binding.mainView.visibility = View.VISIBLE
+                binding.loadingLayout.visibility = View.GONE
+                setMovie(appState.movieData[0])
             }
+            is AppState.Loading -> {
+                mainView.visibility = View.GONE
+                loadingLayout.visibility = View.VISIBLE
+            }
+            is AppState.Error -> {
+                mainView.visibility = View.VISIBLE
+                loadingLayout.visibility = View.GONE
+                mainView.showSnackBar(
+                    getString(R.string.error),
+                    getString(R.string.reload),
+                    { viewModel.getMovieFromRemoteSource(MAIN_LINK + "${movieBundle.id}?api_key=${API_KEY}&language=${DEFAULT_LANGUAGE}") })
+            }
+        }
+    }
+
+    private fun setMovie(movie: Movie) {
+        with(binding) {
+            message.text = getString(R.string.movie_details_info)
+
+            movieTitle.text = movie.title
+            movieOriginalTitle.text = movie.originalTitle
+            movieReleaseDate.text = movie.releaseDate
+            movieTagline.text = movie.tagline
+            movieRuntime.text = movie.runtime
+
+            Picasso
+                .get()
+                .load("https://image.tmdb.org/t/p/${POSTER_WIDTH}${movie.poster}")
+                .into(movieImage)
         }
     }
 
