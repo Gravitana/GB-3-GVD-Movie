@@ -52,7 +52,7 @@ class ListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         listFragmentRecyclerView.adapter = adapter
         listFragmentFAB.setOnClickListener { changeMovieDataSet() }
-        viewModel.getLiveData().observe(viewLifecycleOwner, { renderData(it) })
+        viewModel.detailsLiveData.observe(viewLifecycleOwner, { renderData(it) })
         viewModel.getMovieFromLocalSourceRus()
     }
 

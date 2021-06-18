@@ -1,7 +1,11 @@
 package com.example.gvdmovie.repository
 
-import okhttp3.Callback
+import com.example.gvdmovie.model.MovieDTO
 
 interface DetailsRepository {
-    fun getMovieDetailsFromServer(requestLink: String, callback: Callback)
+    fun getMovieDetailsFromServer(
+        id: String,
+        lang: String,
+        callback: retrofit2.Callback<MovieDTO>
+    )
 }

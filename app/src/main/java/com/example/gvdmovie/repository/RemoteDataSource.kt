@@ -1,16 +1,26 @@
 package com.example.gvdmovie.repository
 
-import okhttp3.Callback
-import okhttp3.OkHttpClient
-import okhttp3.Request
+import com.example.gvdmovie.BuildConfig
+import com.example.gvdmovie.model.MovieDTO
+import com.google.gson.GsonBuilder
+import retrofit2.Callback
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+
+private const val API_KEY = BuildConfig.MOVIE_API_KEY
 
 class RemoteDataSource {
 
-    fun getMovieDetails(requestLink: String, callback: Callback) {
-        val builder: Request.Builder = Request.Builder().apply {
-//            header(REQUEST_API_KEY, BuildConfig.WEATHER_API_KEY)
-            url(requestLink)
-        }
-        OkHttpClient().newCall(builder.build()).enqueue(callback)
+    private val movieApi = Retrofit.Builder()
+        .baseUrl("https://api.themoviedb.org/")
+        .addConverterFactory(
+            GsonConverterFactory.create(
+                GsonBuilder().setLenient().create()
+            )
+        )
+        .build().create(MovieApi::class.java)
+
+    fun getMovieDetails(id: String, lang: String, callback: Callback<MovieDTO>) {
+        movieApi.getMovie(id, API_KEY, lang).enqueue(callback)
     }
 }

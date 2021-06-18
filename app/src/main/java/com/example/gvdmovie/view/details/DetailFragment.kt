@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.example.gvdmovie.BuildConfig
 import com.example.gvdmovie.R
 import com.example.gvdmovie.databinding.DetailFragmentBinding
 import com.example.gvdmovie.model.Movie
@@ -19,9 +18,6 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.detail_fragment.*
 
 const val POSTER_WIDTH = "w500"
-
-private const val MAIN_LINK = "https://api.themoviedb.org/3/movie/"
-private const val API_KEY = BuildConfig.MOVIE_API_KEY
 
 class DetailFragment : Fragment() {
 
@@ -45,8 +41,8 @@ class DetailFragment : Fragment() {
 
         movieBundle = arguments?.getParcelable(BUNDLE_EXTRA) ?: Movie()
 
-        viewModel.getLiveData().observe(viewLifecycleOwner, { renderData(it) })
-        viewModel.getMovieFromRemoteSource(MAIN_LINK + "${movieBundle.id}?api_key=${API_KEY}&language=${DEFAULT_LANGUAGE}")
+        viewModel.detailsLiveData.observe(viewLifecycleOwner, Observer { renderData(it) })
+        viewModel.getMovieFromRemoteSource(movieBundle.id.toString(), DEFAULT_LANGUAGE)
 
     }
 
@@ -67,7 +63,7 @@ class DetailFragment : Fragment() {
                 mainView.showSnackBar(
                     getString(R.string.error),
                     getString(R.string.reload),
-                    { viewModel.getMovieFromRemoteSource(MAIN_LINK + "${movieBundle.id}?api_key=${API_KEY}&language=${DEFAULT_LANGUAGE}") })
+                    { viewModel.getMovieFromRemoteSource(movieBundle.id.toString(), DEFAULT_LANGUAGE) })
             }
         }
     }
