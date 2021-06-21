@@ -17,4 +17,6 @@
 
     <string name="movie_details_info">Подробная информация о фильме</string>
     <string name="with_adult">Для взрослых</string>
+
+    <string name="menu_title_history">history</string>
 </resources>

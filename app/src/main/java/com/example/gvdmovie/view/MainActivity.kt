@@ -10,6 +10,7 @@ import android.view.MenuItem
 import com.example.gvdmovie.R
 import com.example.gvdmovie.databinding.MainActivityBinding
 import com.example.gvdmovie.utils.WITH_ADULT_KEY
+import com.example.gvdmovie.view.history.HistoryFragment
 import com.example.gvdmovie.view.list.ListFragment
 
 class MainActivity : AppCompatActivity() {
@@ -47,6 +48,15 @@ class MainActivity : AppCompatActivity() {
             R.id.with_adult -> {
                 item.isChecked = !item.isChecked
                 saveWithAdult(item)
+                true
+            }
+            R.id.menu_history -> {
+                supportFragmentManager.apply {
+                    beginTransaction()
+                        .add(R.id.container, HistoryFragment.newInstance())
+                        .addToBackStack("")
+                        .commitAllowingStateLoss()
+                }
                 true
             }
             else -> super.onOptionsItemSelected(item)

@@ -96,15 +96,15 @@ class ListFragment : Fragment() {
     private fun renderData(appState: AppState?) {
         when (appState) {
             is AppState.Success -> {
-                listFragmentLoadingLayout.visibility = View.GONE
+                binding.includedLoadingLayout.loadingLayout.visibility = View.GONE
                 listFragmentRootView.showInfoInSnackBar(R.string.loading_success, Snackbar.LENGTH_SHORT)
                 adapter.setMovie(appState.movieData)
             }
             is AppState.Loading -> {
-                listFragmentLoadingLayout.visibility = View.VISIBLE
+                binding.includedLoadingLayout.loadingLayout.visibility = View.VISIBLE
             }
             is AppState.Error -> {
-                listFragmentLoadingLayout.visibility = View.GONE
+                binding.includedLoadingLayout.loadingLayout.visibility = View.GONE
                 listFragmentRootView.showSnackBar(
                     getString(R.string.error),
                     getString(R.string.reload),

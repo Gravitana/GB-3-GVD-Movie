@@ -49,17 +49,17 @@ class DetailFragment : Fragment() {
     private fun renderData(appState: AppState) {
         when (appState) {
             is AppState.Success -> {
-                binding.mainView.visibility = View.VISIBLE
-                binding.loadingLayout.visibility = View.GONE
+                mainView.visibility = View.VISIBLE
+                binding.includedLoadingLayout.loadingLayout.visibility = View.GONE
                 setMovie(appState.movieData[0])
             }
             is AppState.Loading -> {
                 mainView.visibility = View.GONE
-                loadingLayout.visibility = View.VISIBLE
+                binding.includedLoadingLayout.loadingLayout.visibility = View.VISIBLE
             }
             is AppState.Error -> {
                 mainView.visibility = View.VISIBLE
-                loadingLayout.visibility = View.GONE
+                binding.includedLoadingLayout.loadingLayout.visibility = View.GONE
                 mainView.showSnackBar(
                     getString(R.string.error),
                     getString(R.string.reload),
@@ -69,6 +69,9 @@ class DetailFragment : Fragment() {
     }
 
     private fun setMovie(movie: Movie) {
+
+        saveMovie(movie)
+
         with(binding) {
             message.text = getString(R.string.movie_details_info)
 
@@ -83,6 +86,10 @@ class DetailFragment : Fragment() {
                 .load("https://image.tmdb.org/t/p/${POSTER_WIDTH}${movie.poster}")
                 .into(movieImage)
         }
+    }
+
+    private fun saveMovie(movie: Movie) {
+        viewModel.saveMovieToDB(movie)
     }
 
     override fun onDestroyView() {
