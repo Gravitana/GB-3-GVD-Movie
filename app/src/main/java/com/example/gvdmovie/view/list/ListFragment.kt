@@ -1,5 +1,6 @@
 package com.example.gvdmovie.view.list
 
+import android.content.Context
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -17,6 +18,8 @@ import com.example.gvdmovie.viewmodel.DetailViewModel
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.list_fragment.*
 
+private const val IS_RUS_KEY = "LIST_OF_MOVIES_KEY"
+
 class ListFragment : Fragment() {
 
     private var _binding: ListFragmentBinding? = null
@@ -25,7 +28,7 @@ class ListFragment : Fragment() {
     private val viewModel: DetailViewModel by lazy {
         ViewModelProvider(this).get(DetailViewModel::class.java)
     }
-    private var isDataSetRus: Boolean = true
+    private var isDataSetRus: Boolean = false
 
     private val adapter = ListFragmentAdapter(object : OnItemViewClickListener {
         override fun onItemViewClick(movie: Movie) {
@@ -53,12 +56,21 @@ class ListFragment : Fragment() {
         listFragmentRecyclerView.adapter = adapter
         listFragmentFAB.setOnClickListener { changeMovieDataSet() }
         viewModel.detailsLiveData.observe(viewLifecycleOwner, { renderData(it) })
-        viewModel.getMovieFromLocalSourceRus()
+
+        showListOfMovies()
+    }
+
+    private fun showListOfMovies() {
+        activity?.let {
+            if (it.getPreferences(Context.MODE_PRIVATE).getBoolean(IS_RUS_KEY, false)) {
+                changeMovieDataSet()
+            } else {
+                viewModel.getMovieFromLocalSourceRus()
+            }
+        }
     }
 
     private fun changeMovieDataSet() {
-        isDataSetRus = !isDataSetRus
-
         if (isDataSetRus) {
             viewModel.getMovieFromLocalSourceRus()
             binding.listFragmentFAB.setImageResource(R.drawable.ic_baseline_favorite_24)
@@ -66,7 +78,20 @@ class ListFragment : Fragment() {
             viewModel.getMovieFromLocalSourceWorld()
             binding.listFragmentFAB.setImageResource(R.drawable.ic_baseline_language_24)
         }
+        isDataSetRus = !isDataSetRus
+
+        saveListOfMovies(isDataSetRus)
     }
+
+    private fun saveListOfMovies(isDataSetRus: Boolean) {
+        activity?.let {
+            with(it.getPreferences(Context.MODE_PRIVATE).edit()) {
+                putBoolean(IS_RUS_KEY, isDataSetRus)
+                apply()
+            }
+        }
+    }
+
 
     private fun renderData(appState: AppState?) {
         when (appState) {
