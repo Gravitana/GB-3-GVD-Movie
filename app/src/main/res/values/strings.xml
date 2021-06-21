@@ -16,4 +16,5 @@
     <string name="poster">Постер</string>
 
     <string name="movie_details_info">Подробная информация о фильме</string>
+    <string name="with_adult">Для взрослых</string>
 </resources>

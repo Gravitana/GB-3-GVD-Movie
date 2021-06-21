@@ -5,6 +5,7 @@ import com.example.gvdmovie.model.Movie
 import com.example.gvdmovie.model.MovieDTO
 
 const val DEFAULT_LANGUAGE = "ru-RU"
+const val WITH_ADULT_KEY = "LIST_MOVIES_WITH_ADULT_KEY"
 
 fun convertDtoToModel(movieDTO: MovieDTO): List<Movie> {
     return listOf(Movie(

@@ -1,11 +1,15 @@
 package com.example.gvdmovie.view
 
+import android.content.Context
 import android.content.IntentFilter
 import android.net.ConnectivityManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import com.example.gvdmovie.R
 import com.example.gvdmovie.databinding.MainActivityBinding
+import com.example.gvdmovie.utils.WITH_ADULT_KEY
 import com.example.gvdmovie.view.list.ListFragment
 
 class MainActivity : AppCompatActivity() {
@@ -26,6 +30,36 @@ class MainActivity : AppCompatActivity() {
                 .commitNow()
         }
         registerReceiver(receiver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.toolbar_menu, menu)
+
+        menu.getItem(0).setChecked(this.getPreferences(Context.MODE_PRIVATE).getBoolean(
+            WITH_ADULT_KEY, false))
+
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.with_adult -> {
+                item.isChecked = !item.isChecked
+                saveWithAdult(item)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun saveWithAdult(item: MenuItem) {
+        this.let {
+            with(it.getPreferences(Context.MODE_PRIVATE).edit()) {
+                putBoolean(WITH_ADULT_KEY, item.isChecked)
+                apply()
+            }
+        }
     }
 
     override fun onDestroy() {
