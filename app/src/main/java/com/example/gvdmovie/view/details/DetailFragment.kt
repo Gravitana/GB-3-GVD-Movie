@@ -1,44 +1,23 @@
 package com.example.gvdmovie.view.details
 
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import com.example.gvdmovie.R
 import com.example.gvdmovie.databinding.DetailFragmentBinding
 import com.example.gvdmovie.model.Movie
-import com.example.gvdmovie.model.MovieDTO
+import com.example.gvdmovie.utils.DEFAULT_LANGUAGE
+import com.example.gvdmovie.utils.showSnackBar
+import com.example.gvdmovie.viewmodel.AppState
+import com.example.gvdmovie.viewmodel.DetailViewModel
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.detail_fragment.*
 
 const val POSTER_WIDTH = "w500"
-
-const val DETAILS_INTENT_FILTER = "DETAILS INTENT FILTER"
-const val DETAILS_LOAD_RESULT_EXTRA = "LOAD RESULT"
-const val DETAILS_INTENT_EMPTY_EXTRA = "INTENT IS EMPTY"
-const val DETAILS_DATA_EMPTY_EXTRA = "DATA IS EMPTY"
-const val DETAILS_RESPONSE_EMPTY_EXTRA = "RESPONSE IS EMPTY"
-const val DETAILS_REQUEST_ERROR_EXTRA = "REQUEST ERROR"
-const val DETAILS_REQUEST_ERROR_MESSAGE_EXTRA = "REQUEST ERROR MESSAGE"
-const val DETAILS_URL_MALFORMED_EXTRA = "URL MALFORMED"
-const val DETAILS_RESPONSE_SUCCESS_EXTRA = "RESPONSE SUCCESS"
-
-const val DETAILS_ID_EXTRA = "MOVIE ID"
-const val DETAILS_TITLE_EXTRA = "MOVIE TITLE"
-const val DETAILS_ORIGINAL_TITLE_EXTRA = "MOVIE ORIGINAL TITLE"
-const val DETAILS_RELEASE_DATE_EXTRA = "MOVIE RELEASE DATE"
-const val DETAILS_TAGLINE_EXTRA = "MOVIE TAGLINE"
-const val DETAILS_RUNTIME_EXTRA = "MOVIE RUNTIME"
-const val DETAILS_POSTER_PATH_EXTRA = "MOVIE POSTER PATH"
-
-const val ID_INVALID = 0
-const val STRING_INVALID = ""
-
-private const val PROCESS_ERROR = "Обработка ошибки"
 
 class DetailFragment : Fragment() {
 
@@ -47,45 +26,7 @@ class DetailFragment : Fragment() {
 
     private lateinit var movieBundle: Movie
 
-    private val loadResultsReceiver: BroadcastReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context, intent: Intent) {
-            when (intent.getStringExtra(DETAILS_LOAD_RESULT_EXTRA)) {
-                DETAILS_INTENT_EMPTY_EXTRA -> TODO(PROCESS_ERROR)
-                DETAILS_DATA_EMPTY_EXTRA -> TODO(PROCESS_ERROR)
-                DETAILS_RESPONSE_EMPTY_EXTRA -> TODO(PROCESS_ERROR)
-                DETAILS_REQUEST_ERROR_EXTRA -> TODO(PROCESS_ERROR)
-                DETAILS_REQUEST_ERROR_MESSAGE_EXTRA -> TODO(PROCESS_ERROR)
-                DETAILS_URL_MALFORMED_EXTRA -> TODO(PROCESS_ERROR)
-                DETAILS_RESPONSE_SUCCESS_EXTRA -> renderData(
-                    MovieDTO(
-                        intent.getIntExtra(DETAILS_ID_EXTRA, ID_INVALID),
-                        intent.getStringExtra(DETAILS_TITLE_EXTRA),
-                        intent.getStringExtra(DETAILS_ORIGINAL_TITLE_EXTRA),
-                        intent.getStringExtra(DETAILS_RELEASE_DATE_EXTRA),
-                        intent.getStringExtra(DETAILS_TAGLINE_EXTRA),
-                        intent.getStringExtra(DETAILS_RUNTIME_EXTRA),
-                        intent.getStringExtra(DETAILS_POSTER_PATH_EXTRA),
-                    )
-                )
-                else -> TODO(PROCESS_ERROR)
-            }
-        }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        context?.let {
-            LocalBroadcastManager.getInstance(it)
-                .registerReceiver(loadResultsReceiver, IntentFilter(DETAILS_INTENT_FILTER))
-        }
-    }
-
-    override fun onDestroy() {
-        context?.let {
-            LocalBroadcastManager.getInstance(it).unregisterReceiver(loadResultsReceiver)
-        }
-        super.onDestroy()
-    }
+    private val viewModel: DetailViewModel by lazy { ViewModelProvider(this).get(DetailViewModel::class.java) }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -99,58 +40,48 @@ class DetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         movieBundle = arguments?.getParcelable(BUNDLE_EXTRA) ?: Movie()
-        getMovie()
+
+        viewModel.detailsLiveData.observe(viewLifecycleOwner, Observer { renderData(it) })
+        viewModel.getMovieFromRemoteSource(movieBundle.id.toString(), DEFAULT_LANGUAGE)
+
     }
 
-    private fun getMovie() {
-        binding.mainView.visibility = View.GONE
-        binding.loadingLayout.visibility = View.VISIBLE
-
-        context?.let {
-            it.startService(Intent(it, DetailsService::class.java).apply {
-                putExtra(
-                    ID_EXTRA,
-                    movieBundle.id
-                )
-//                putExtra(
-//                    LONGITUDE_EXTRA,
-//                    weatherBundle.city.lon
-//                )
-            })
+    private fun renderData(appState: AppState) {
+        when (appState) {
+            is AppState.Success -> {
+                binding.mainView.visibility = View.VISIBLE
+                binding.loadingLayout.visibility = View.GONE
+                setMovie(appState.movieData[0])
+            }
+            is AppState.Loading -> {
+                mainView.visibility = View.GONE
+                loadingLayout.visibility = View.VISIBLE
+            }
+            is AppState.Error -> {
+                mainView.visibility = View.VISIBLE
+                loadingLayout.visibility = View.GONE
+                mainView.showSnackBar(
+                    getString(R.string.error),
+                    getString(R.string.reload),
+                    { viewModel.getMovieFromRemoteSource(movieBundle.id.toString(), DEFAULT_LANGUAGE) })
+            }
         }
     }
 
-    private fun renderData(movieDTO: MovieDTO) {
-        binding.mainView.visibility = View.VISIBLE
-        binding.loadingLayout.visibility = View.GONE
+    private fun setMovie(movie: Movie) {
+        with(binding) {
+            message.text = getString(R.string.movie_details_info)
 
-        val id = movieDTO.id
-        val title = movieDTO.title ?: STRING_INVALID
-        val original_title = movieDTO.original_title ?: STRING_INVALID
-        val release_date = movieDTO.release_date ?: STRING_INVALID
-        val tagline = movieDTO.tagline ?: STRING_INVALID
-        val runtime = movieDTO.runtime ?: STRING_INVALID
-        val poster_path = movieDTO.poster_path ?: STRING_INVALID
+            movieTitle.text = movie.title
+            movieOriginalTitle.text = movie.originalTitle
+            movieReleaseDate.text = movie.releaseDate
+            movieTagline.text = movie.tagline
+            movieRuntime.text = movie.runtime
 
-        if (id == ID_INVALID) {
-            TODO(PROCESS_ERROR)
-        } else {
-            with(binding) {
-                message.text = "Подробная информация о фильме"
-
-                movieTitle.text = title
-                movieOriginalTitle.text = original_title
-                movieReleaseDate.text = release_date
-                movieTagline.text = tagline
-                movieRuntime.text = runtime
-
-                if (poster_path != STRING_INVALID) {
-                    Picasso
-                        .get()
-                        .load("https://image.tmdb.org/t/p/${POSTER_WIDTH}${poster_path}")
-                        .into(movieImage)
-                }
-            }
+            Picasso
+                .get()
+                .load("https://image.tmdb.org/t/p/${POSTER_WIDTH}${movie.poster}")
+                .into(movieImage)
         }
     }
 
