@@ -9,9 +9,9 @@ import android.view.ViewGroup
 import com.example.gvdmovie.R
 import com.example.gvdmovie.databinding.ListFragmentBinding
 import com.example.gvdmovie.model.Movie
+import com.example.gvdmovie.utils.showInfoInSnackBar
+import com.example.gvdmovie.utils.showSnackBar
 import com.example.gvdmovie.view.details.DetailFragment
-import com.example.gvdmovie.view.showInfoInSnackBar
-import com.example.gvdmovie.view.showSnackBar
 import com.example.gvdmovie.viewmodel.AppState
 import com.example.gvdmovie.viewmodel.DetailViewModel
 import com.google.android.material.snackbar.Snackbar
@@ -52,7 +52,7 @@ class ListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         listFragmentRecyclerView.adapter = adapter
         listFragmentFAB.setOnClickListener { changeMovieDataSet() }
-        viewModel.getLiveData().observe(viewLifecycleOwner, { renderData(it) })
+        viewModel.detailsLiveData.observe(viewLifecycleOwner, { renderData(it) })
         viewModel.getMovieFromLocalSourceRus()
     }
 

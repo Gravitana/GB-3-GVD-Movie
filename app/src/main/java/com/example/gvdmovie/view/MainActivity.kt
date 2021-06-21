@@ -1,5 +1,7 @@
 package com.example.gvdmovie.view
 
+import android.content.IntentFilter
+import android.net.ConnectivityManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.gvdmovie.R
@@ -9,6 +11,8 @@ import com.example.gvdmovie.view.list.ListFragment
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: MainActivityBinding
+
+    private val receiver = MainBroadcastReceiver()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,5 +25,11 @@ class MainActivity : AppCompatActivity() {
                 .replace(R.id.container, ListFragment.newInstance())
                 .commitNow()
         }
+        registerReceiver(receiver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
+    }
+
+    override fun onDestroy() {
+        unregisterReceiver(receiver)
+        super.onDestroy()
     }
 }
