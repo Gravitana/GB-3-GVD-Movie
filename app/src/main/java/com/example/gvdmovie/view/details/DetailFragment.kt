@@ -5,11 +5,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.gvdmovie.R
 import com.example.gvdmovie.databinding.DetailFragmentBinding
 import com.example.gvdmovie.model.Movie
+import com.example.gvdmovie.room.NoteEntity
 import com.example.gvdmovie.utils.DEFAULT_LANGUAGE
 import com.example.gvdmovie.utils.showSnackBar
 import com.example.gvdmovie.viewmodel.AppState
@@ -43,7 +45,6 @@ class DetailFragment : Fragment() {
 
         viewModel.detailsLiveData.observe(viewLifecycleOwner, Observer { renderData(it) })
         viewModel.getMovieFromRemoteSource(movieBundle.id.toString(), DEFAULT_LANGUAGE)
-
     }
 
     private fun renderData(appState: AppState) {
@@ -85,11 +86,30 @@ class DetailFragment : Fragment() {
                 .get()
                 .load("https://image.tmdb.org/t/p/${POSTER_WIDTH}${movie.poster}")
                 .into(movieImage)
+
+            val notes = viewModel.getMovieNotes(movie)
+
+            if (notes.isNotEmpty()) {
+                val note = notes.first()
+                movieNote.setText(note.note)
+            }
+
+            saveButton.setOnClickListener {
+                saveNote(movie)
+            }
         }
     }
 
     private fun saveMovie(movie: Movie) {
         viewModel.saveMovieToDB(movie)
+    }
+
+    private fun saveNote(movie: Movie) {
+
+        val note: String = binding.movieNote.text.toString() //"Заметка к фильму"
+
+        if (note.isNotBlank())
+            viewModel.saveNoteToDB(NoteEntity(0, movie.id.toString(), note))
     }
 
     override fun onDestroyView() {

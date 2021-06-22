@@ -3,9 +3,11 @@ package com.example.gvdmovie.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.gvdmovie.app.App.Companion.getHistoryDao
+import com.example.gvdmovie.app.App.Companion.getNoteDao
 import com.example.gvdmovie.model.Movie
 import com.example.gvdmovie.model.MovieDTO
 import com.example.gvdmovie.repository.*
+import com.example.gvdmovie.room.NoteEntity
 import com.example.gvdmovie.utils.convertDtoToModel
 import retrofit2.Call
 import retrofit2.Callback
@@ -21,7 +23,8 @@ class DetailViewModel(
     private val listRepositoryImpl: ListRepository = ListRepositoryImpl(),
     val detailsLiveData: MutableLiveData<AppState> = MutableLiveData(),
     private val detailsRepositoryImpl: DetailsRepository = DetailsRepositoryImpl(RemoteDataSource()),
-    private val historyRepository: LocalHistoryRepository = LocalHistoryRepositoryImpl(getHistoryDao())
+    private val historyRepository: LocalHistoryRepository = LocalHistoryRepositoryImpl(getHistoryDao()),
+    private val noteRepository: LocalNotesRepository = LocalNotesRepositoryImpl(getNoteDao())
 ) :
     ViewModel() {
 
@@ -36,6 +39,14 @@ class DetailViewModel(
 
     fun saveMovieToDB(movie: Movie) {
         historyRepository.saveEntity(movie)
+    }
+
+    fun getMovieNotes(movie: Movie) : List<NoteEntity> {
+        return noteRepository.getAllNotes(movie.id)
+    }
+
+    fun saveNoteToDB(noteEntity: NoteEntity) {
+        noteRepository.saveEntity(noteEntity)
     }
 
     private val callBack = object : Callback<MovieDTO> {
