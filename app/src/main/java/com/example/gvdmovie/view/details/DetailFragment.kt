@@ -1,6 +1,7 @@
 package com.example.gvdmovie.view.details
 
 import android.os.Bundle
+import android.os.SystemClock.sleep
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -18,10 +19,12 @@ import com.example.gvdmovie.viewmodel.AppState
 import com.example.gvdmovie.viewmodel.DetailViewModel
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.detail_fragment.*
+import kotlinx.coroutines.*
+import kotlin.coroutines.CoroutineContext
 
 const val POSTER_WIDTH = "w500"
 
-class DetailFragment : Fragment() {
+class DetailFragment : Fragment(), CoroutineScope {
 
     private var _binding: DetailFragmentBinding? = null
     private val binding get() = _binding!!
@@ -29,6 +32,11 @@ class DetailFragment : Fragment() {
     private lateinit var movieBundle: Movie
 
     private val viewModel: DetailViewModel by lazy { ViewModelProvider(this).get(DetailViewModel::class.java) }
+
+    private val job = SupervisorJob()
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.Main + job
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -76,6 +84,8 @@ class DetailFragment : Fragment() {
         with(binding) {
             message.text = getString(R.string.movie_details_info)
 
+            movieNote.setText(getString(R.string.loading))
+
             movieTitle.text = movie.title
             movieOriginalTitle.text = movie.originalTitle
             movieReleaseDate.text = movie.releaseDate
@@ -87,11 +97,19 @@ class DetailFragment : Fragment() {
                 .load("https://image.tmdb.org/t/p/${POSTER_WIDTH}${movie.poster}")
                 .into(movieImage)
 
-            val notes = viewModel.getMovieNotes(movie)
+            val notes = async {
+//                sleep(1000)
+                viewModel.getMovieNotes(movie)
+            }
 
-            if (notes.isNotEmpty()) {
-                val note = notes.first()
-                movieNote.setText(note.note)
+            launch {
+                val notesList: List<NoteEntity> = notes.await()
+                val note = if (notesList.isNotEmpty()) {
+                    notesList.first().note
+                } else {
+                    ""
+                }
+                movieNote.setText(note)
             }
 
             saveButton.setOnClickListener {
@@ -115,6 +133,7 @@ class DetailFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        coroutineContext.cancelChildren()
     }
 
     companion object {
