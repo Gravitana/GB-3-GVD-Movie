@@ -2,6 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/menu_contacts"
+        android:icon="@drawable/ic_contacts"
+        android:title="@string/contacts"
+        app:showAsAction="always" />
+
+    <item
         android:id="@+id/with_adult"
         android:orderInCategory="100"
         android:title="@string/with_adult"

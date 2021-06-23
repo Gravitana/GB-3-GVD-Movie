@@ -10,6 +10,7 @@ import android.view.MenuItem
 import com.example.gvdmovie.R
 import com.example.gvdmovie.databinding.MainActivityBinding
 import com.example.gvdmovie.utils.WITH_ADULT_KEY
+import com.example.gvdmovie.view.contacts.ContactsFragment
 import com.example.gvdmovie.view.history.HistoryFragment
 import com.example.gvdmovie.view.list.ListFragment
 
@@ -54,6 +55,15 @@ class MainActivity : AppCompatActivity() {
                 supportFragmentManager.apply {
                     beginTransaction()
                         .add(R.id.container, HistoryFragment.newInstance())
+                        .addToBackStack("")
+                        .commitAllowingStateLoss()
+                }
+                true
+            }
+            R.id.menu_contacts -> {
+                supportFragmentManager.apply {
+                    beginTransaction()
+                        .add(R.id.container, ContactsFragment.newInstance())
                         .addToBackStack("")
                         .commitAllowingStateLoss()
                 }
