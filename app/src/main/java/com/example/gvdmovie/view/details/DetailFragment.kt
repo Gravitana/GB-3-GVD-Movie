@@ -127,7 +127,7 @@ class DetailFragment : Fragment(), CoroutineScope {
         val note: String = binding.movieNote.text.toString() //"Заметка к фильму"
 
         if (note.isNotBlank())
-            viewModel.saveNoteToDB(NoteEntity(0, movie.id.toString(), note))
+            viewModel.saveNoteToDB(NoteEntity(movie.id.toString(), note))
     }
 
     override fun onDestroyView() {

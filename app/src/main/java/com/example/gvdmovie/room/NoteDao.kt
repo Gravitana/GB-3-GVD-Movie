@@ -11,7 +11,7 @@ interface NoteDao {
     @Query("SELECT * FROM NoteEntity WHERE movie_id LIKE :movie_id")
     fun getDataByMovieId(movie_id: String): List<NoteEntity>
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(entity: NoteEntity)
 
     @Update

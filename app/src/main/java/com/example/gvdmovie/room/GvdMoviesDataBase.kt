@@ -6,7 +6,7 @@ import androidx.room.RoomDatabase
 @Database(entities = arrayOf(
     HistoryEntity::class,
     NoteEntity::class
-), version = 2, exportSchema = false)
+), version = 3, exportSchema = false)
 abstract class GvdMoviesDataBase : RoomDatabase() {
 
     abstract fun historyDao(): HistoryDao
