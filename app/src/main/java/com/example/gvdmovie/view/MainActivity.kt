@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import com.example.gvdmovie.googlemaps.GoogleMapsFragment
 import com.example.gvdmovie.R
 import com.example.gvdmovie.databinding.MainActivityBinding
 import com.example.gvdmovie.utils.WITH_ADULT_KEY
@@ -64,6 +65,15 @@ class MainActivity : AppCompatActivity() {
                 supportFragmentManager.apply {
                     beginTransaction()
                         .add(R.id.container, ContactsFragment.newInstance())
+                        .addToBackStack("")
+                        .commitAllowingStateLoss()
+                }
+                true
+            }
+            R.id.menu_google_maps -> {
+                supportFragmentManager.apply {
+                    beginTransaction()
+                        .add(R.id.container, GoogleMapsFragment())
                         .addToBackStack("")
                         .commitAllowingStateLoss()
                 }

@@ -21,6 +21,26 @@
     <string name="menu_title_history">history</string>
     <string name="movie_note_label">Заметка</string>
     <string name="save">Сохранить</string>
-    <string name="loading">...загрузка...</string>
+    <string name="loading">…загрузка…</string>
     <string name="contacts">Контакты</string>
+
+    <string name="dialog_button_close">Закрыть</string>
+    <string name="dialog_title_no_gps">Доступ к геолокации закрыт</string>
+    <string name="dialog_message_no_gps">Разрешите доступ к геолокации, для работы с картой</string>
+    <string name="dialog_title_gps_turned_off">GPS отключён</string>
+    <string name="dialog_message_last_location_unknown">Местонахождение неизвестно. Необходимо включить GPS</string>
+    <string name="dialog_message_last_known_location">Показана последняя известная локация. Включите GPS, если хотите обновить местонахождение</string>
+    <string name="dialog_rationale_title">Доступ к геолокации</string>
+    <string name="dialog_rationale_meaasge">Для определения местонахождения и использования карты, необходимо разрешить доступ к геолокации</string>
+    <string name="dialog_rationale_give_access">Предоставить доступ</string>
+    <string name="dialog_rationale_decline">Не надо</string>
+    <string name="dialog_address_title">Ваш адрес</string>
+
+    <string name="dialog_address_open_map">Открыть карту</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="google_maps">Карты Google</string>
+    <string name="default_address">Red Square, 1, Moscow</string>
+    <string name="button_search_map">Search</string>
+    <string name="marker_start">Start</string>
+
 </resources>
