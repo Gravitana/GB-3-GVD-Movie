@@ -13,4 +13,8 @@
     <dimen name="movie_title_text_size">24sp</dimen>
     <dimen name="movie_lable_text_size">8sp</dimen>
     <dimen name="movie_item_text_size">16sp</dimen>
+    <dimen name="margin_5_dp">5dp</dimen>
+    <dimen name="hairline">1dp</dimen>
+    <dimen name="contact_item_text_size">6sp</dimen>
+    <dimen name="fab_location_icon_size">45dp</dimen>
 </resources>
