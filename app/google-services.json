@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "838632366186",
+    "project_id": "gvd-movies",
+    "storage_bucket": "gvd-movies.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:838632366186:android:d3656d571ac281ab00aa13",
+        "android_client_info": {
+          "package_name": "com.example.gvdmovie"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "838632366186-uboren75sr5062ajvp9a96r33dtasdrp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBMvAcLZrrq6iiiWPUtsywF7Sf_IilgsOk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "838632366186-uboren75sr5062ajvp9a96r33dtasdrp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
