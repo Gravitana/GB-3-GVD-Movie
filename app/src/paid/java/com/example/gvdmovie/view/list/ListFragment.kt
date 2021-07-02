@@ -1,6 +1,7 @@
 package com.example.gvdmovie.view.list
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Geocoder
@@ -91,6 +92,7 @@ class ListFragment : Fragment() {
         return view
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         listFragmentRecyclerView.adapter = adapter
@@ -98,7 +100,7 @@ class ListFragment : Fragment() {
         listFragmentFABLocation.setOnClickListener { checkPermission() }
         viewModel.detailsLiveData.observe(viewLifecycleOwner, { renderData(it) })
 
-        binding.appInfo.text = BuildConfig.TYPE
+        binding.appInfo.text = getString(R.string.flavor) + BuildConfig.TYPE
 
         showListOfMovies()
     }
