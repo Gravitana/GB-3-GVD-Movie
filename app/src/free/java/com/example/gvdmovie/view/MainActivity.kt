@@ -7,11 +7,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import com.example.gvdmovie.googlemaps.GoogleMapsFragment
 import com.example.gvdmovie.R
 import com.example.gvdmovie.databinding.MainActivityBinding
 import com.example.gvdmovie.utils.WITH_ADULT_KEY
-import com.example.gvdmovie.view.contacts.ContactsFragment
 import com.example.gvdmovie.view.history.HistoryFragment
 import com.example.gvdmovie.view.list.ListFragment
 

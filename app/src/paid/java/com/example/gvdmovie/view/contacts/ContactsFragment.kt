@@ -116,7 +116,7 @@ class ContactsFragment : Fragment() {
                     // Переходим на позицию в Cursor'е
                     if (cursor.moveToPosition(i)) {
                         // Берём из Cursor'а столбец с именем
-                        val name = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME))
+                        val name = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)) ?: "null"
                         addView(it, name)
                     }
                 }
