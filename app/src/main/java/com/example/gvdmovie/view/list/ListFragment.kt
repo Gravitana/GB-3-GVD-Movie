@@ -15,6 +15,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
+import com.example.gvdmovie.BuildConfig
 import com.example.gvdmovie.R
 import com.example.gvdmovie.databinding.ListFragmentBinding
 import com.example.gvdmovie.googlemaps.GoogleMapsFragment
@@ -96,6 +97,8 @@ class ListFragment : Fragment() {
         listFragmentFAB.setOnClickListener { changeMovieDataSet() }
         listFragmentFABLocation.setOnClickListener { checkPermission() }
         viewModel.detailsLiveData.observe(viewLifecycleOwner, { renderData(it) })
+
+        binding.appInfo.text = BuildConfig.TYPE
 
         showListOfMovies()
     }
