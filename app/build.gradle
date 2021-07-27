@@ -20,22 +20,50 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    Properties properties = new Properties()
+    properties.load(project.rootProject.file("apikey.properties").newDataInputStream())
+
+    signingConfigs {
+        release {
+            def signedStorePass = properties.getProperty("gvd_movies_signed_storepass", "")
+            def signedKeyAlias = properties.getProperty("gvd_movies_signed_keyalias", "")
+            def signedKeyPass = properties.getProperty("gvd_movies_signed_keypass", "")
+
+            storeFile file("keystore.jks")
+            storePassword signedStorePass
+            keyAlias signedKeyAlias
+            keyPassword signedKeyPass
+        }
+    }
+
     buildFeatures {
         viewBinding true
     }
 
     buildTypes.each {
-        Properties properties = new Properties()
-        properties.load(project.rootProject.file("apikey.properties").newDataInputStream())
         def apiKey = properties.getProperty("themoviedb_api_key", "")
         it.buildConfigField "String", "MOVIE_API_KEY", apiKey
     }
 
     buildTypes {
         release {
+            signingConfig signingConfigs.release
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField "String", "TYPE", '"RELEASE"'
         }
+
+        beta {
+            initWith debug
+            versionNameSuffix "-beta"
+            buildConfigField "String", "TYPE", '"BETA"'
+        }
+
+        debug {
+            versionNameSuffix "-debug"
+            buildConfigField "String", "TYPE", '"DEBUG"'
+        }
+
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -43,6 +71,18 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
+    }
+
+    flavorDimensions 'version'
+    productFlavors {
+        free {
+            dimension 'version'
+            versionNameSuffix '.free'
+        }
+        paid {
+            dimension 'version'
+            versionNameSuffix '.paid'
+        }
     }
 }
 

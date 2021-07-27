@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/listFragmentRootView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/listFragmentRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/secondListFragmentRecyclerView" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/secondListFragmentRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toStartOf="@+id/app_info"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/listFragmentRecyclerView"
+        app:layout_constraintBottom_toTopOf="@id/app_info" />
+
+    <TextView
+        android:id="@+id/app_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/secondListFragmentRecyclerView"
+        />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/listFragmentFAB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@drawable/ic_baseline_favorite_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:maxImageSize="@dimen/fab_icon_size" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/listFragmentFABLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/fab_margin"
+        android:backgroundTint="@color/colorPrimaryDark"
+        android:src="@android:drawable/ic_dialog_map"
+        app:layout_constraintBottom_toTopOf="@+id/listFragmentFAB"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:maxImageSize="@dimen/fab_location_icon_size" />
+
+    <include
+        android:id="@+id/includedLoadingLayout"
+        layout="@layout/loading_layout" />
+</androidx.constraintlayout.widget.ConstraintLayout>
